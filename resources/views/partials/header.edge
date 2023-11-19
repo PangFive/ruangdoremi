@@ -13,7 +13,7 @@
           @!icons.menuTwo({ className: 'w-6 h-6 text-slate-600 group-hover:text-slate-900' })
         @endslot
         
-        <nav class="flex flex-col flex-1 space-y-1">
+        {{--  <nav class="flex flex-col flex-1 space-y-1">
           <a href="{{ route('series.show', { slug: 'lets-learn-adonisjs-5' }) }}" up-follow class="hover:bg-slate-300 text-slate-600 hover:text-slate-900 text-lg flex items-center gap-3 py-1.5 px-3 rounded-md" @click="close">
             <div class="w-10 h-10 bg-slate-100 text-slate-600 rounded-full flex items-center justify-center">
               @!icons.arrowGuide({ className: 'w-6 h-6 relative' })
@@ -69,7 +69,7 @@
               @end
             </div>
           @endif
-        </nav>
+        </nav>  --}}
       @end
 
       <a href="/" class="mr-4 flex-1 md:flex-none md:mr-0 hover:opacity-80" up-follow>
@@ -80,7 +80,7 @@
       <nav class="hidden md:flex flex-1 space-x-3 ml-6">
         {{--  @!header.navLink({ text: 'Start Here', href: route('series.show', { slug: 'lets-learn-adonisjs-5' }), upFollow: true })  --}}
         @!header.navLink({ text: 'Series', href: route('series.index'), upFollow: true })
-        @!header.navLink({ text: 'Topics', href: route('topics.index'), upFollow: true })
+        {{--  @!header.navLink({ text: 'Topics', href: route('topics.index'), upFollow: true })  --}}
       </nav>
 
       <div class="flex gap-1">

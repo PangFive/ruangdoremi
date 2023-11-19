@@ -15,8 +15,8 @@
     </svg>
   </button>
   <div x-show="activeAccordion==id" x-collapse x-cloak>
-    <div class="p-4 pt-0 text-slate-800 prose {{ $props['class'] }}">
-      {{{ await $slots.main() }}}
+    <div class="p-7 pt-0 text-slate-800 {{ $props['class'] }}">
+      {{{ await $slots.main() }}} 
     </div>
   </div>
 </div>

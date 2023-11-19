@@ -41,7 +41,7 @@
 
             <div class="aspect-square w-24 lg:w-36 relative z-10">
               @if (series.asset)
-                <img src="{{ assetDomain }}/img/{{ series.asset.filename }}" class="rounded-full w-24 h-24 lg:w-36 lg:h-36 shadow-lg border-2 border-slate-900/25" />
+                <img src="{{ series.asset.filename }}" class="rounded-full w-24 h-24 lg:w-36 lg:h-36 shadow-lg border-2 border-slate-900/25" />
               @else
                 <div class="w-16 h-16 lg:w-20 lg:h-20 text-2xl font-semibold flex items-center justify-center rounded-full bg-brand-300 text-brand-800">
                   {{ getAbbrev(series.name) }}
