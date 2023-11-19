@@ -26,6 +26,8 @@ Server.middleware.register([
   () => import('App/Middleware/SilentAuth'),
   () => import('App/Middleware/SessionCheck'),
   () => import('App/Middleware/Context'),
+  () => import('App/Middleware/AppState'),
+  // () => import('App/Middleware/HtmlMinify')
 ])
 
 /*
@@ -52,4 +54,5 @@ Server.middleware.registerNamed({
   unpoly: () => import('App/Middleware/Unpoly'),
   postTypeCheck: () => import('App/Middleware/PostTypeCheck'),
   throttle: () => import('@adonisjs/limiter/build/throttle'),
+  role: () => import('App/Middleware/Role')
 })

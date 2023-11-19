@@ -5,6 +5,10 @@ import AnalyticsService from "./AnalyticsService"
 import { ModelPaginatorContract } from "@ioc:Adonis/Lucid/Orm"
 import { AuthContract } from "@ioc:Adonis/Addons/Auth"
 import States from "App/Enums/States"
+import Asset from "App/Models/Asset"
+import StorageService from "./StorageService"
+import CacheService from 'App/Services/CacheService'
+import DiscordLogger from "@ioc:Logger/Discord"
 
 export default class PostService {
   /**
@@ -266,5 +270,71 @@ export default class PostService {
       )
       .orderBy('publishAt', 'desc')
       .limit(limit)
+  }
+
+  // start
+
+  public static async getFeatureSingle(excludeIds: number[] = []) {
+    return Post.lessons()
+      .apply(scope => scope.forDisplay())
+      .if(excludeIds.length, query => query.whereNotIn('id', excludeIds))
+      .whereHas('assets', query => query)
+      .orderBy('publishAt', 'desc')
+      .first()
+  }
+
+  public static async syncAssets(post: Post, assetIds: number[] = []) {
+    const assetData = assetIds.reduce((prev, currentId, i) => ({
+      ...prev,
+      [currentId]: {
+        sort_order: i
+      }
+    }), {})
+
+    await post.related('assets').sync(assetData)
+  }
+
+  public static async destroyAssets(post: Post) {
+    const assets = await post.related('assets').query().select(['id', 'filename'])
+    const assetIds = assets.map(a => a.id)
+    const assetFilenames = assets.map(a => a.filename)
+
+    await post.related('assets').detach()
+    await Asset.query().whereIn('id', assetIds).delete()
+
+    StorageService.destroyAll(assetFilenames)
+  }
+
+  public static async syncTaxonomies(post: Post, taxonomyIds: number[] = []) {
+    const taxonomyData = taxonomyIds.reduce((prev, currentId, i) => ({
+      ...prev,
+      [currentId]: {
+        sort_order: i
+      }
+    }), {})
+
+    await post.related('taxonomies').sync(taxonomyData)
+  }
+
+  public static async checkLive() {
+    try {
+      if (await CacheService.has('isLive')) {
+        return CacheService.getParsed('isLive')
+      }
+    } catch (e) {
+      await CacheService.destroy('isLive')
+      await DiscordLogger.error('PostService.checkLive', e.message)
+    }
+
+    const live = await Post.query()
+      .whereTrue('isLive')
+      .whereNotNull('livestreamUrl')
+      .apply(s => s.published())
+      .orderBy('publishAt', 'desc')
+      .first()
+
+    await CacheService.setSerialized('isLive', live?.serialize(), CacheService.fiveMinutes)
+
+    return live
   }
 }

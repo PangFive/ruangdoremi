@@ -4,6 +4,9 @@ import States from "App/Enums/States";
 import User from "App/Models/User";
 import StripeService from "./StripeService";
 import Logger from '@ioc:Adonis/Core/Logger';
+import RoleEnum, { RoleWeights} from 'App/Enums/Roles';
+import Event from '@ioc:Adonis/Core/Event';
+import Role from 'App/Models/Role'
 
 export default class UserService {
   /**
@@ -91,6 +94,22 @@ export default class UserService {
       await request.related('comments').query().delete()
       await request.related('votes').query().delete()
       await request.delete()
+    }
+  }
+
+  public static async sendRoleUpdateNotification(user: User, newRole: Role, oldRole: Role) {
+    const oldRoleWeight = RoleWeights.findIndex(id => id === oldRole.id)
+    const newRoleWeight = RoleWeights.findIndex(id => id === newRole.id)
+
+    if (oldRoleWeight >= newRoleWeight) return
+
+    switch (newRole.id) {
+      case RoleEnum.CONTRIBUTOR_LVL_1:
+        return Event.emit('role:upgrade:contributor_lvl_1', { user, newRole, oldRole })
+      case RoleEnum.CONTRIBUTOR_LVL_2:
+        return Event.emit('role:upgrade:contributor_lvl_2', { user, newRole, oldRole })
+      case RoleEnum.ADMIN:
+        return Event.emit('role:upgrade:admin', { user, newRole, oldRole })
     }
   }
 }

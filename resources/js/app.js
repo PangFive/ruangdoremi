@@ -7,6 +7,7 @@ import './_alpine'
 import './_unpoly'
 import './_video'
 import './_prose'
+import 'babel-polyfill'
 
 Cookies.set('timezone', DateTime.now().zoneName)
 
@@ -22,6 +23,34 @@ window.onfocus = async function() {
 
   if (window.isAuthenticated && !isAuthenticated) {
     window.location = '/go/auth/reset'
+  }
+}
+
+window.appWatchlist = function(route, payload, isInWatchlist) {
+  return {
+    payload,
+    isInWatchlist,
+
+    async toggle() {
+      const { data } = await axios.post(route, this.payload)
+      this.isInWatchlist = !data.wasDeleted
+    }
+  }
+}
+
+window.appCompleted = function(route, payload, isCompleted = false) {
+  return {
+    payload,
+    isCompleted,
+
+    async toggle() {
+      const { data } = await axios.post(route, this.payload)
+      this.isCompleted = data.progression.isCompleted
+    },
+
+    changeCompleted(event) {
+      this.isCompleted = event.detail.isCompleted
+    }
   }
 }
 

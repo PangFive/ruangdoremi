@@ -9,6 +9,7 @@ import Post from "App/Models/Post"
 import LessonRequest from "App/Models/LessonRequest"
 import NotImplementedException from "App/Exceptions/NotImplementedException"
 import { DateTime } from "luxon"
+import NotificationType from "App/Enums/NotificationType"
 
 export default class NotificationService {
   /**
@@ -244,5 +245,69 @@ export default class NotificationService {
     }
     
     return `/go/posts/${comment.postId}/comment/${comment.id}`
+  }
+
+  public static async getForDisplay(user: User | undefined, stub: boolean = false) {
+    if (!user || stub) return {
+      unread: [],
+      read: []
+    }
+
+    return {
+      unread: await this.getUnread(user.id),
+      read: await this.getLatestRead(user.id)
+    }
+  }
+
+  public static async getUnread(userId: number) {
+    return Notification.query().where({ userId }).whereNull('readAt').orderBy('createdAt', 'desc')
+  }
+
+  public static async getLatestRead(userId: number) {
+    return Notification.query().where({  userId }).whereNotNull('readAt').orderBy('createdAt', 'desc')
+  }
+
+  public static async onRead(notification_id: number) {
+    try {
+      const notification = await Notification.findOrFail(notification_id)
+
+      notification.readAt = DateTime.utc()
+      await notification.save()
+
+      return notification
+    } catch (error) {
+      await Logger.error('Failed to mark notification as read', {
+        notification_id,
+      })
+    }
+  }
+
+  public static async onComment(comment: Comment, user?: User) {
+    try {
+      const post = await Post.findOrFail(comment.postId)
+      await post.load('authors')
+
+      for (let i = 0; i < post.authors.length; i++) {
+        await Notification.create({
+          userId: post.authors[i].id,
+          initiatorUserId: user?.id,
+          notificationTypeId: NotificationType.COMMENT,
+          table: Comment.table,
+          tableId: comment.id,
+          title: user ? `${user.username} commented` : "Someone commented",
+          body: this.truncate(comment.body),
+          href: this.getGoPath(comment)
+        })
+      }
+    } catch (error) {
+      await Logger.error('Failed to create comment notification', {
+        comment: JSON.stringify(comment),
+        error
+      })
+    }
+  }
+
+  private static truncate(string: string) {
+    return string.length > 255 ? string.slice(0, 255) + "..." : string
   }
 }

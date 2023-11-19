@@ -1,0 +1,111 @@
+@layout('layouts/studio')
+
+@section('heading')
+  @studio.heading()
+    {{--  <div class="flex space-x-3">
+      @button({ href: route('studio.users.roles.edit', { id: user.id }), size: 'sm' })
+        Edit Role
+      @end
+    </div>  --}}
+    @slot('heading')
+      <h3 class="text-2xl lg:text-4xl leading-6 font-black pb-3">
+        {{ user.username }}
+        @if (profile.name)
+          <span ({{ profile.name}}) </span>
+        @endif
+      </h3>
+      <p>{{ user.email }}</p>
+    @endslot
+  @end
+@endsection
+
+@section('content')
+
+  @form.section({ title: 'Change Role', description: 'Change the user\'s role' })
+    @form.base({ action: route('studio.users.role', { id: user.id }, { qs: { _method: 'PATCH' } }) })
+      @form.input({
+        type: 'select',
+        label: 'Role',
+        name: 'roleId',
+        value: flashMessages.get('roleId') ?? user.roleId,
+        errors: flashMessages.get('errors.roleId'),
+        required: true,
+        groupStyle: 'max-width: 45ch'
+      })
+        @each(role in roles)
+          <option value="{{ role.id }}">{{ role.name }}</option>
+        @endeach
+      @end
+
+      @button({ type: 'submit', variant: 'blackSecondary', className: 'mt-3' })
+        Change Role
+      @end
+    @end
+  @end
+
+  <div class="flex items-start justify-between mt-6">
+    <table>
+      <thead>
+        <tr>
+          <th class="p-2">Date</th>
+          <th class="p-2">Number</th>
+          <th class="p-2">Amount</th>
+          <th class="p-2">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each (invoice in invoices)
+          <tr>
+            <td class="p-2">{{ invoice.periodStartAt.toFormat('MMM dd, yyyy') }}</td>
+            <td class="p-2">{{ invoice.invoiceNumber }}</td>
+            <td class="p-2">{{ invoice.amountDue }}</td>
+            <td class="p-2">{{ invoice.status }}</td>
+          </tr>
+        @endeach
+      </tbody>
+    </table>
+
+    <form method="POST" action="{{ route('studio.users.invoices.store', { id: user.id }) }}">
+      {{ csrfField() }}
+      <label>
+        Invoice Id
+        @!form.input({ type: 'text', name: 'invoiceId' })
+      </label>
+      <label>
+        Invoice Number
+        @!form.input({ type: 'text', name: 'invoiceNumber' })
+      </label>
+      <label>
+        Charge Id
+        @!form.input({ type: 'text', name: 'chargeId' })
+      </label>
+      <label>
+        Amount Due
+        @!form.input({ type: 'number', name: 'amountDue' })
+      </label>
+      <label>
+        Amount Paid
+        @!form.input({ type: 'number', name: 'amountPaid' })
+      </label>
+      <label>
+        Amount Remaining
+        @!form.input({ type: 'number', name: 'amountRemaining' })
+      </label>
+      <label>
+        Status
+        @!form.input({ type: 'text', name: 'status' })
+      </label>
+      <label>
+        Period Start At
+        @!form.input({ type: 'number', name: 'periodStartAt', placeholder: 'Seconds timestamp' })
+      </label>
+      <label>
+        Period End At
+        @!form.input({ type: 'number', name: 'periodEndAt', placeholder: 'Seconds timestamp' })
+      </label>
+
+      <button type="submit">Create Invoice</button>
+    </form>
+  </div>
+
+@endsection

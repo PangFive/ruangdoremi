@@ -12,7 +12,8 @@
 @endsection
 
 @section('hero')
-  @if (!auth.user)
+  @!marketing.homeHero({ stats })
+  {{--  @if (!auth.user)
     @!marketing.homeHero({ stats })
   @else
     <div class="app-container">
@@ -28,7 +29,7 @@
         </div>
       </div>
     </div>
-  @endif
+  @endif  --}}
 
 @endsection
 
@@ -55,7 +56,7 @@
       </div>
     </section>
 
-    <section class="break py-8">
+    {{--  <section class="break py-8">
       <div class="container mx-auto px-3">
         @!headings.section({
           title: 'Dive Into Our Covered Topics',
@@ -207,7 +208,7 @@
           </div>
         </div>
       </section>
-    @endif
+    @endif  --}}
 
     @if (env('STRIPE_ENABLED') && (!auth.user?.planId || auth.user?.planId === Plans.FREE))
       <section class="break">

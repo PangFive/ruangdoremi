@@ -1,9 +1,10 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, computed } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, HasMany, column, computed, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Env from '@ioc:Adonis/Core/Env'
 import UtilityService from 'App/Services/UtilityService'
 import Plans from 'App/Enums/Plans'
 import CouponDurations from 'App/Enums/CouponDurations'
+import User from './User'
 
 export default class Plan extends BaseModel {
   @column({ isPrimary: true })
@@ -120,4 +121,7 @@ export default class Plan extends BaseModel {
   public get displaySalePrice() {
     return UtilityService.formatCurrency(this.salePrice, 'USD', 'en-US', 0)
   }
+
+  @hasMany(() => User)
+  public users: HasMany<typeof User>
 }

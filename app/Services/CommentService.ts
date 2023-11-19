@@ -12,6 +12,8 @@ import UtilityService from "./UtilityService";
 import IdentityService from "./IdentityService";
 import CommentTypes from "App/Enums/CommentTypes";
 import { DateTime } from "luxon";
+import Post from "App/Models/Post";
+import HttpIdentityService from "./Http/HttpIdentityService";
 
 export default class CommentService {
   public static async store(request: RequestContract, auth: AuthContract, { body, ...data }: CommentValidator['schema']['props']) {
@@ -126,5 +128,21 @@ export default class CommentService {
     }
 
     await trx.commit()
+  }
+
+  public static async getForPost(post: Post) {
+    const httpIdentityService = new HttpIdentityService()
+    const identity = await httpIdentityService.getRequestIdentity()
+
+    return post.related('comments')
+      .query()
+      .preload('user')
+      .preload('userVotes', query => query.select(['id']))
+      .where(query => query
+          .where('stateId', States.PUBLIC)
+          .orWhere({ identity })
+      )
+      .orderBy('createdAt', 'desc')
+      .highlightAll()
   }
 }

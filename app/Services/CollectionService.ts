@@ -2,6 +2,9 @@ import { AuthContract } from "@ioc:Adonis/Addons/Auth";
 import { ModelQueryBuilderContract } from "@ioc:Adonis/Lucid/Orm";
 import Collection from "App/Models/Collection";
 import Post from "App/Models/Post";
+import Database from '@ioc:Adonis/Lucid/Database'
+import CacheService from 'App/Services/CacheService'
+import AssetService from './AssetService'
 
 export default class CollectionService {
   /**
@@ -241,5 +244,150 @@ export default class CollectionService {
       .orderBy('latest_publish_at', 'desc')
       .select(['collections.*'])
       .limit(limit)
+  }
+
+  public static async getSeriesForPost(post: Post, userId: number | null = null) {
+    return post.related('rootSeries').query()
+      .wherePublic()
+      .preload('posts', query => query.apply(scope => scope.forCollectionDisplay()))
+      .preload('children', query => query
+        .wherePublic()
+        .preload('posts', query => query
+          .apply(scope => scope.forCollectionDisplay())
+          .if(userId, query => query.preload('progressionHistory', query => query.where({ userId })))
+        )
+      )
+      .preload('updatedVersions', query => query
+        .wherePublic()
+        .whereHas('postsFlattened', query => query.apply(s => s.published()))
+      )
+      .first()
+  }
+
+  // TODO: finish
+  public static async getPostCounts(collections: Collection[]) {
+    const ids = collections.map(c => c.id)
+    const subCollections = await Collection.query()
+      .whereIn('parentId', ids)
+      .orWhereIn('id', ids)
+      .withCount('posts')
+      .select('id')
+
+    return subCollections
+  }
+
+  // TODO: finish
+  public static async getPostCount(collection: Collection) {
+    const subCollections = await Collection.query()
+      .where('parentId', collection.id)
+      .withCount('posts')
+      .select('id')
+
+    return subCollections
+  }
+
+  public static async updateOrCreate(collection: Collection, { postIds, taxonomyIds, assetTypeIds, altTexts, credits, subcollectionCollectionIds = [], subcollectionCollectionNames = [], subcollectionPostIds = [], ...data }: { [x: string]: any }, isOwner: boolean) {
+    if (isOwner) {
+      await collection.merge(data).save()
+    }
+
+    if (isOwner && data.assetId) {
+      await AssetService.syncAssetTypes([data.assetId], assetTypeIds, altTexts, credits)
+    }
+    
+    await CollectionService.syncPosts(collection, postIds, { root_collection_id: collection.id })
+    await CollectionService.syncTaxonomies(collection, taxonomyIds)
+
+    if (subcollectionPostIds) {
+      await this.syncSubcollectionPosts(collection, subcollectionCollectionIds, subcollectionPostIds, subcollectionCollectionNames)
+    }
+
+    await CacheService.clearForCollection(collection.slug)
+
+    return collection
+  }
+
+  public static async stub(userId: number, data: { parentId: number }) {
+    return Collection.create({
+      ...data,
+      name: 'Your new collection',
+      ownerId: userId
+    })
+  }
+
+  public static async delete(collectionId: number) {
+    const collection = await Collection.query()
+      .where('id', collectionId)
+      .preload('children', query => query.select('id'))
+      .firstOrFail()
+
+    const collectionIds = [...collection.children.map(c => c.id), collection.id]
+    await Database.from('collection_posts').whereIn('collection_id', collectionIds).delete()
+    await Database.from('collection_taxonomies').whereIn('collection_id', collectionIds).delete()
+    await Collection.query().whereIn('id', collectionIds).delete()
+    await CacheService.clearForCollection(collection.slug)
+
+    return collection
+  }
+
+  public static async syncPosts(collection: Collection, postIds: number[] = [], intermediaryData: { [x: string]: any } = {}) {
+    const syncData = this.getPostSyncData(postIds, intermediaryData)
+
+    return collection.related('posts').sync(syncData)
+  }
+
+  public static async syncTaxonomies(collection: Collection, taxonomyIds: number[] = []) {
+    const taxonomyData = taxonomyIds.reduce((prev, currentId, i) => ({
+      ...prev,
+      [currentId]: {
+        sort_order: i
+      }
+    }), {})
+
+    await collection.related('taxonomies').sync(taxonomyData)
+  }
+
+  public static getPostSyncData(postIds: number[] = [], intermediaryData: { [x: string]: any } = {}) {
+    return postIds.reduce((prev, curr, i) => ({
+      ...prev,
+      [curr]: {
+        ...intermediaryData,
+        sort_order: i,
+        root_sort_order: i
+      }
+    }), {})
+  }
+
+  public static async syncSubcollectionPosts(rootCollection: Collection, subcollectionCollectionIds: number[], subcollectionPostIds: number[][], subcollectionCollectionNames: string[]) {
+    let rootSortOrder = -1
+
+    const promises = subcollectionCollectionIds.map((collectionId, i) => {
+      return new Promise(async (resolve) => {
+        const postIds = subcollectionPostIds[i] ?? []
+        const collectionName = subcollectionCollectionNames[i]
+        const postSyncData = postIds.reduce((prev, curr, i) => ({
+          ...prev,
+          [curr]: {
+            sort_order: i,
+            root_sort_order: ++rootSortOrder,
+            root_collection_id: rootCollection.id
+          }
+        }), {})
+
+        const collection = await Collection.findOrFail(collectionId)
+
+        await collection.merge({
+          name: collectionName,
+          collectionTypeId: rootCollection.collectionTypeId,
+          sortOrder: i
+        }).save()
+
+        await collection.related('posts').sync(postSyncData)
+
+        resolve(true)
+      })
+    })
+
+    await Promise.all(promises)
   }
 }
