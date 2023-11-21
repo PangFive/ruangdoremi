@@ -9,7 +9,23 @@ import './_video'
 import './_prose'
 import 'babel-polyfill'
 
+import 'keen-slider/keen-slider.min.css'
+import KeenSlider from 'keen-slider'
+
 Cookies.set('timezone', DateTime.now().zoneName)
+
+window.slider = new KeenSlider(
+  '#my-slider',
+  {
+    loop: true,
+    created: () => {
+      console.log('created')
+    },
+  },
+  [
+    // add plugins here
+  ]
+)
 
 window.DateTime = DateTime
 
