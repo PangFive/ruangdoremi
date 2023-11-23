@@ -12,6 +12,26 @@ import 'babel-polyfill'
 import 'keen-slider/keen-slider.min.css'
 import KeenSlider from 'keen-slider'
 
+// import Swiper from 'swiper';
+// import 'swiper/css';
+
+// window.swiper = new Swiper(".mySwiper", {
+//   spaceBetween: 30,
+//   centeredSlides: true,
+//   autoplay: {
+//     delay: 2500,
+//     disableOnInteraction: false,
+//   },
+//   pagination: {
+//     el: ".swiper-pagination",
+//     clickable: true,
+//   },
+//   navigation: {
+//     nextEl: ".swiper-button-next",
+//     prevEl: ".swiper-button-prev",
+//   },
+// });
+
 Cookies.set('timezone', DateTime.now().zoneName)
 
 window.slider = new KeenSlider(

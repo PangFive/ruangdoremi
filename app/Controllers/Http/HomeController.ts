@@ -23,11 +23,10 @@ export default class HomeController {
     const posts = await PostService.getLatest(auth.user ? 17 : 12, [], [PostTypes.LESSON, PostTypes.LIVESTREAM])
     const blogs = await PostService.getLatest(6, [], [PostTypes.BLOG, PostTypes.NEWS])
     const snippets = await PostService.getLatest(3, [], [PostTypes.SNIPPET])
-    const series = await CollectionService.getLastUpdated(8, false)
+    const series = await CollectionService.getLastUpdated(3, false)
     const topics = await TaxonomyService.getList()
 
     const postCount = await Post.query().apply(s => s.published()).getCount()
-    const postSeconds = await Post.query().sum('video_seconds').first()
     const seriesCount = await Collection.series().wherePublic().getCount()
     const topicCount = await Taxonomy.query().getCount()
 
@@ -40,12 +39,11 @@ export default class HomeController {
 
     const stats = {
       postCount,
-      postSeconds,
       seriesCount,
       topicCount
     }
 
-    return view.render('pages/index', { trending, posts, series, topics, stats, blogs, snippets })
+    return view.render('pages/index', { trending, stats, posts, blogs, snippets, series, topics })
   }
 
   public async pricing({ view }: HttpContextContract) {

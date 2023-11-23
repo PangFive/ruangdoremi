@@ -326,3 +326,5 @@ Route.group(() => {
 })
   .prefix('/go')
   .as('go')
+
+Route.post('/test',() => "kmkmkm")

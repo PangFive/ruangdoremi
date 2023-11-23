@@ -11,6 +11,37 @@
   })
 @endsection
 
+
+@section('styles')
+<style>
+
+  .banner__button-next, .banner__button-prev {
+    top: 50%;
+    position: absolute;
+    width: unset;
+    opacity: 1;
+    z-index: 10;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #e6f1f6;
+    color: #165fa7;
+    justify-content: center;
+    align-items: center;
+    opacity: 20%;
+  }
+
+  .banner__button-next:hover, .banner__button-prev:hover {
+    opacity: 100%;
+  }
+
+  .swiper-button-next:after, .swiper-button-prev:after {
+    font-size: medium;
+    font-weight: bold;
+  }
+</style>
+@endsection
+
 @section('hero')
   @!marketing.homeHero({ stats })
   {{--  @if (!auth.user)
@@ -34,23 +65,100 @@
 @endsection
 
 @section('content')
-  <div class="space-y-24 mt-16">
-    <section class="break">
-      <div class="overflow-hidden">
-        <div class="mx-auto max-w-7xl px-0 md:pb-16">
-          <div class="mx-auto max-w-2xl gap-x-16 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
-            <div class="container mx-auto px-2 md:px-0 sm:w-full lg:w-1/3 pb-10 lg:pb-0">
-              @!headings.section({
-                title: 'Mau Konsultasi Langsung?',
-                subtitle: 'Silahkan scan QR Code dibawah untuk menjadwalkan kunjungan anda ke BPKP',
-                className: 'text-center mb-3'
-              })
-              <div class="rounded-xl overflow-hidden mt-5 md:px-0 px-16">
-                <picture class="max-w-full h-full rounded-xl">
-                    <img src="/imgs/sitopan.svg" alt="akuntansi_dasar" class="bg-gray-100 w-full max-w-full aspect-square object-cover h-full  " loading="lazy" >
-                </picture>
+  <div class="space-y-24 mt-20">
+    <section class="mx-auto max-w-2xl gap-x-10 lg:mx-0 lg:flex lg:max-w-none lg:items-end ">
+      <div class="container mx-auto px-2 md:px-0 sm:w-full lg:w-3/12 pb-10 lg:pb-0 ml-0 md:ml-10">
+        @!headings.section({
+          title: 'Mau Konsultasi Langsung?',
+          subtitle: 'Scan QR Code dibawah untuk kunjungan anda ke BPKP',
+          className: 'text-center mb-3'
+        })
+        <div class="rounded-xl overflow-hidden mt-5 px-5 lg:px-5">
+          <img src="/imgs/sitopan.svg" alt="sitopan" class="bg-[#e6e9f3] shadow-[inset_0rem_0.2rem_0.4rem_0_rgb(0,0,0,0.1)]    rounded-xl" loading="lazy" >
+        </div>
+      </div>
+      <div class="container items-center sm:w-full lg:w-9/12 lg:mt-0 mt-5">
+        <div class="swiper mySwiper rounded-xl">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="w-full aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+                <a href="#" target="" rel="noopener" title="Lab Komputer">
+                  <picture>
+                    <img src="/imgs/ruangan/lab-komputer.jpg" alt="Lab Komputer" width="360" height="120" class="w-full h-full object-cover bg-gray-200">
+                  </picture>
+                  <div class="absolute w-full h-1/2 z-20 bottom-0 rounded-lg bg-gradient-to-b from-indigo-600/0 from-10% to-blue-700/90 to-60%">
+                    <h2 class="text-center text-white mt-10 text-lg font-bold">
+                      Ruang Lab Komputer
+                    </h2>
+                    <p class="text-center text-white text-sm mt-2">
+                      Dapat menampung peserta dengan kapasitas 10 BUMDes
+                    </p>
+                  </div>
+                </a>
               </div>
             </div>
+            <div class="swiper-slide">
+              <div class="w-full aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+                <a href="#" target="" rel="noopener" title="Aula">
+                  <picture>
+                    <img src="/imgs/ruangan/aula.jpg" alt="Aula" width="360" height="120" class="w-full h-full object-cover bg-gray-200">
+                  </picture>
+                  <div class="absolute w-full h-1/2 z-20 bottom-0 rounded-lg bg-gradient-to-b from-indigo-600/0 from-10% to-blue-700/90 to-60%">
+                    <h2 class="text-center text-white mt-10 text-lg font-bold">
+                      Ruang Aula BPKP
+                    </h2>
+                    <p class="text-center text-white text-sm mt-2">
+                      Dapat menampung peserta dengan kapasitas diatas 20 BUMDes
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="w-full aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+                <a href="#" target="" rel="noopener" title="Ruang Rapat">
+                  <picture>
+                    <img src="/imgs/ruangan/ruang-rapat.jpg" alt="Ruang Rapat" width="360" height="120" class="w-full h-full object-cover bg-gray-200">
+                  </picture>
+                  <div class="absolute w-full h-1/2 z-20 bottom-0 rounded-lg bg-gradient-to-b from-indigo-600/0 from-10% to-blue-700/90 to-60%">
+                    <h2 class="text-center text-white mt-10 text-lg font-bold">
+                      Ruang Rapat
+                    </h2>
+                    <p class="text-center text-white text-sm mt-2">
+                      Dapat menampung peserta dengan kapasitas 5 BUMDes
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="w-full aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
+                <a href="#" target="" rel="noopener" title="Ruang Kelas">
+                  <picture>
+                    <img src="/imgs/ruangan/ruang-kelas.jpg" alt="Ruang Kelas" width="360" height="120" class="w-full h-full object-cover bg-gray-200">
+                  </picture>
+                  <div class="absolute w-full h-1/2 z-20 bottom-0 rounded-lg bg-gradient-to-b from-indigo-600/0 from-10% to-blue-700/90 to-60%">
+                    <h2 class="text-center text-white mt-10 text-lg font-bold">
+                      Ruang Diklat BPKP
+                    </h2>
+                    <p class="text-center text-white text-sm mt-2">
+                      Dapat menampung peserta dengan kapasitas 10-20 BUMDes
+                    </p>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+            <div class="swiper-button-next banner__button-next" style=""></div>
+            <div class="swiper-button-prev banner__button-prev"></div>
+            <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+    <section class="break">
+      <div class="overflow-hidden">
+        <div class="mx-auto max-w-7xl px-0 md:pt-14">
+          <div class="mx-auto max-w-2xl gap-x-16 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
             <div class="container mx-auto px-4 md:px-0">
               @!headings.section({
                 title: 'Discover Our Latest Updated Series',
@@ -379,5 +487,29 @@
       </section>
     @endif
   </div>
+
+@endsection
+
+@section('scripts')
+<script>
+    var swiper = new Swiper(".mySwiper", {
+      slidesPerView: 2,
+      loop: true,
+      spaceBetween: 20,
+      centeredSlides: true,
+      autoplay: {
+        delay: 2500,
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
+    });
+  </script>
 
 @endsection
