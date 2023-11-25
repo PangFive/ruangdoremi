@@ -21,7 +21,7 @@ export const { httpLimiters } = Limiter
     const sessionLogService = new SessionLogService(request, response)
     
     return Limiter
-      .allowRequests(100)
+      .allowRequests(5000)
       .every('1 min')
       .usingKey(sessionLogService.ipAddress)
   })
@@ -31,7 +31,7 @@ export const { httpLimiters } = Limiter
     const sessionLogService = new SessionLogService(request, response)
 
     return Limiter
-      .allowRequests(150)
+      .allowRequests(5000)
       .every('1 min')
       .usingKey(sessionLogService.ipAddress)
   })

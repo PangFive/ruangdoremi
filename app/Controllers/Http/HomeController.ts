@@ -23,7 +23,7 @@ export default class HomeController {
     const posts = await PostService.getLatest(auth.user ? 17 : 12, [], [PostTypes.LESSON, PostTypes.LIVESTREAM])
     const blogs = await PostService.getLatest(6, [], [PostTypes.BLOG, PostTypes.NEWS])
     const snippets = await PostService.getLatest(3, [], [PostTypes.SNIPPET])
-    const series = await CollectionService.getLastUpdated(3, false)
+    const series = await CollectionService.getLastUpdated(4, false)
     const topics = await TaxonomyService.getList()
 
     const postCount = await Post.query().apply(s => s.published()).getCount()

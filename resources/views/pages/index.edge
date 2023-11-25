@@ -67,7 +67,7 @@
 @section('content')
   <div class="space-y-24 mt-20">
     <section class="mx-auto max-w-2xl gap-x-10 lg:mx-0 lg:flex lg:max-w-none lg:items-end ">
-      <div class="container mx-auto px-2 md:px-0 sm:w-full lg:w-3/12 pb-10 lg:pb-0 ml-0 md:ml-10">
+      <div class="container sitopan mx-auto px-2 md:px-0 sm:w-full lg:w-3/12 pb-10 lg:pb-0 ml-0 md:ml-10">
         @!headings.section({
           title: 'Mau Konsultasi Langsung?',
           subtitle: 'Scan QR Code dibawah untuk kunjungan anda ke BPKP',
@@ -487,29 +487,5 @@
       </section>
     @endif
   </div>
-
-@endsection
-
-@section('scripts')
-<script>
-    var swiper = new Swiper(".mySwiper", {
-      slidesPerView: 2,
-      loop: true,
-      spaceBetween: 20,
-      centeredSlides: true,
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-    });
-  </script>
 
 @endsection

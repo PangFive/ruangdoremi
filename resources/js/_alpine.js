@@ -2,6 +2,7 @@ import Alpine from 'alpinejs'
 import intersect from '@alpinejs/intersect'
 import { DateTime } from 'luxon'
 import { chain } from 'mathjs'
+import KeenSlider from 'keen-slider'
 
 Alpine.plugin(intersect)
 
@@ -13,6 +14,80 @@ Alpine.data('drawer', function () {
     destroy() {
       document.body.classList.remove('overflow-hidden')
       this.$el.remove()
+    }
+  }
+})
+
+Alpine.data('drawer', function () {
+  return {
+    init() {
+      document.body.classList.add('overflow-hidden')
+    },
+    destroy() {
+      document.body.classList.remove('overflow-hidden')
+      this.$el.remove()
+    }
+  }
+})
+
+Alpine.data('keenSliderData', () => {
+  return {
+    tanggal: 12,
+    current: 1,
+    slider: null,
+
+    nextSlide() {
+      // this.slider.next();
+    },
+
+    prevSlide() {
+      // this.slider.prev();
+    },
+
+    runKeenSlider() {
+      this.slider = new KeenSlider(
+        '#my-slider',
+        {
+          loop: true,
+          created: () => {
+            console.log('created')
+          },
+          slideChanged: (s) => {
+            this.current = s.track.details.rel
+          },
+          slides: {
+            perView: 4,
+            spacing: 20,
+            initial: this.current,
+          },
+      
+        },[]
+      )
+    },
+  }
+})
+
+Alpine.data('swiperData', function () {
+  return {
+    runSwiper() {
+      new Swiper(".mySwiper", {
+        slidesPerView: 2,
+        loop: true,
+        spaceBetween: 20,
+        centeredSlides: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
     }
   }
 })
