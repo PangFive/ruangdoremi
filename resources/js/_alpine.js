@@ -69,15 +69,29 @@ Alpine.data('keenSliderData', () => {
 
 Alpine.data('swiperData', function () {
   return {
+    swiper: null,
+
     runSwiper() {
-      new Swiper(".mySwiper", {
-        slidesPerView: 2,
+      this.swiper = new Swiper("#swiperContainer", {
         loop: true,
-        spaceBetween: 20,
         centeredSlides: true,
         autoplay: {
           delay: 2500,
           disableOnInteraction: false,
+        },
+        breakpoints: {
+          640: {
+            slidesPerView: 1,
+            spaceBetween: 0,
+          },
+          768: {
+            slidesPerView: 1,
+            spaceBetween: 0,
+          },
+          1024: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
         },
         pagination: {
           el: ".swiper-pagination",

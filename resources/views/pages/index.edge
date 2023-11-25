@@ -78,7 +78,7 @@
         </div>
       </div>
       <div class="container items-center sm:w-full lg:w-9/12 lg:mt-0 mt-5">
-        <div class="swiper mySwiper rounded-xl">
+        <div x-data="swiperData" x-init="runSwiper()" class="swiper mySwiper rounded-xl" id="swiperContainer">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="w-full aspect-w-3 aspect-h-2 rounded-lg overflow-hidden">
