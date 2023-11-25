@@ -327,4 +327,4 @@ Route.group(() => {
   .prefix('/go')
   .as('go')
 
-Route.post('/test',() => "kmkmkm")
+Route.get('/test',({view}) => view.render('welcome'))

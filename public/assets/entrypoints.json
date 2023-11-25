@@ -2,45 +2,50 @@
   "entrypoints": {
     "app": {
       "css": [
-        "http://localhost:8080/assets/app.css"
+        "/assets/app.14696144.css"
       ],
       "js": [
-        "http://localhost:8080/assets/app.js"
+        "/assets/app.46186b39.js"
       ]
     },
     "pdf": {
       "js": [
-        "http://localhost:8080/assets/pdf.js"
+        "/assets/pdf.b806140d.js"
       ]
     },
     "post": {
       "js": [
-        "http://localhost:8080/assets/post.js"
+        "/assets/post.32745565.js"
       ]
     },
     "stream": {
       "js": [
-        "http://localhost:8080/assets/stream.js"
+        "/assets/stream.69a126ce.js"
       ]
     },
     "file_manager": {
       "js": [
-        "http://localhost:8080/assets/file_manager.js"
+        "/assets/file_manager.f73924f8.js"
+      ]
+    },
+    "alpine_start": {
+      "js": [
+        "/assets/alpine_start.c263e8a3.js"
       ]
     },
     "tiptap_basic": {
       "js": [
-        "http://localhost:8080/assets/tiptap_basic.js"
+        "/assets/tiptap_basic.9ffa7a88.js"
       ]
     },
     "studio.posts.editor": {
       "js": [
-        "http://localhost:8080/assets/studio.posts.editor.js"
+        "/assets/studio.posts.editor.f917f554.js"
       ]
     },
     "studio.collections": {
       "js": [
-        "http://localhost:8080/assets/studio.collections.js"
+        "/assets/studio.collections.01483f3b.js"
       ]
     }
   }

@@ -1,14 +1,15 @@
 {
-  "assets/app.css": "http://localhost:8080/assets/app.css",
-  "assets/app.js": "http://localhost:8080/assets/app.js",
-  "assets/pdf.js": "http://localhost:8080/assets/pdf.js",
-  "assets/post.js": "http://localhost:8080/assets/post.js",
-  "assets/stream.js": "http://localhost:8080/assets/stream.js",
-  "assets/file_manager.js": "http://localhost:8080/assets/file_manager.js",
-  "assets/tiptap_basic.js": "http://localhost:8080/assets/tiptap_basic.js",
-  "assets/studio.posts.editor.js": "http://localhost:8080/assets/studio.posts.editor.js",
-  "assets/studio.collections.js": "http://localhost:8080/assets/studio.collections.js",
-  "assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js": "http://localhost:8080/assets/vendors-node_modules_html2canvas_dist_html2canvas_js.js",
-  "assets/vendors-node_modules_dompurify_dist_purify_js.js": "http://localhost:8080/assets/vendors-node_modules_dompurify_dist_purify_js.js",
-  "assets/vendors-node_modules_canvg_lib_index_es_js.js": "http://localhost:8080/assets/vendors-node_modules_canvg_lib_index_es_js.js"
+  "assets/app.css": "/assets/app.14696144.css",
+  "assets/app.js": "/assets/app.46186b39.js",
+  "assets/pdf.js": "/assets/pdf.b806140d.js",
+  "assets/post.js": "/assets/post.32745565.js",
+  "assets/stream.js": "/assets/stream.69a126ce.js",
+  "assets/file_manager.js": "/assets/file_manager.f73924f8.js",
+  "assets/alpine_start.js": "/assets/alpine_start.c263e8a3.js",
+  "assets/tiptap_basic.js": "/assets/tiptap_basic.9ffa7a88.js",
+  "assets/studio.posts.editor.js": "/assets/studio.posts.editor.f917f554.js",
+  "assets/studio.collections.js": "/assets/studio.collections.01483f3b.js",
+  "assets/120.93f95e76.js": "/assets/120.93f95e76.js",
+  "assets/856.4ce041d5.js": "/assets/856.4ce041d5.js",
+  "assets/392.762f1f47.js": "/assets/392.762f1f47.js"
 }
