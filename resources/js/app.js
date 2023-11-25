@@ -10,33 +10,8 @@ import './_prose'
 import 'babel-polyfill'
 
 import 'keen-slider/keen-slider.min.css'
-// import KeenSlider from 'keen-slider'
-
-// import Swiper from 'swiper';
-// import 'swiper/css';
-
-// window.Swiper = Swiper((...);)
 
 Cookies.set('timezone', DateTime.now().zoneName)
-
-// window.slider = new KeenSlider(
-//   '#my-slider',
-//   {
-//     loop: true,
-//     created: () => {
-//       console.log('created')
-//     },
-//     slideChanged: (s) => {
-//       console.log(s)
-//     },
-//     slides: {
-//       perView: 4,
-//       spacing: 20,
-//       initial: 1,
-//     },
-
-//   },[]
-// )
 
 window.DateTime = DateTime
 

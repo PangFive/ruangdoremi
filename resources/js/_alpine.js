@@ -3,8 +3,10 @@ import intersect from '@alpinejs/intersect'
 import { DateTime } from 'luxon'
 import { chain } from 'mathjs'
 import KeenSlider from 'keen-slider'
+import collapse from '@alpinejs/collapse'
 
 Alpine.plugin(intersect)
+Alpine.plugin(collapse)
 
 Alpine.data('drawer', function () {
   return {
@@ -33,18 +35,95 @@ Alpine.data('drawer', function () {
 Alpine.data('keenSliderData', () => {
   return {
     tanggal: 12,
+    tanggals: [
+      {
+        date: 11,
+        day: "Sen"
+      },
+      {
+        date: 12,
+        day: "Sel"
+      },
+      {
+        date: 13,
+        day: "Rab"
+      },
+      {
+        date: 14,
+        day: "Kam"
+      },
+      {
+        date: 15,
+        day: "Jum"
+      },
+      {
+        date: 16,
+        day: "Sab"
+      },
+      {
+        date: 17,
+        day: "Min"
+      },
+      {
+        date: 18,
+        day: "Sen"
+      },
+      {
+        date: 19,
+        day: "Sel"
+      },
+    ],
+    dataEvents: [
+      {
+          date: 12,
+          title: "Materi Akuntansi",
+          category: "Bidang AN BPKP",
+          time: "08:00 - 16:00 WIB",
+          status: "Belum mulai",
+          noActivity: false,
+      },
+      {
+          date: 19,
+          title: "Materi dan Latihan Jurnal Transaksi",
+          category: "Bidang AN BPKP",
+          time: "08:00 - 16:00 WIB",
+          status: "Belum mulai",
+          noActivity: false,
+      },
+      {
+          date: 0,
+          title: "Tidak Ada Kegiatan",
+          category: "BPKP",
+          time: "Silahkan pilih tanggal lain",
+          status: "",
+          noActivity: true,
+      },
+    ],
+    events: [],
     current: 1,
     slider: null,
 
-    nextSlide() {
-      // this.slider.next();
-    },
 
-    prevSlide() {
-      // this.slider.prev();
+    changeEvents() {
+      const data = this.dataEvents.filter(event => event.date == this.tanggal)
+      
+      if (data.length > 0) {
+        this.events = data;
+      } else {
+        this.events = [{
+            date: 0,
+            title: "Tidak Ada Kegiatan",
+            category: "BPKP",
+            time: "Silahkan pilih tanggal lain",
+            status: "",
+            noActivity: true,
+        }]
+      }
     },
+    
+    init() {
+      this.changeEvents();
 
-    runKeenSlider() {
       this.slider = new KeenSlider(
         '#my-slider',
         {
@@ -60,7 +139,6 @@ Alpine.data('keenSliderData', () => {
             spacing: 20,
             initial: this.current,
           },
-      
         },[]
       )
     },
