@@ -286,6 +286,16 @@ Alpine.data('turnstile', function () {
   }
 })
 
+Alpine.data('modalni', function () {
+  return {
+    open: false,
+
+    init() {
+      this.$watch('open',()=>console.log('jalan'))
+    }
+  }
+})
+
 window.countdown = function ({ dateTime }) {
   return {
     target: dateTime,
