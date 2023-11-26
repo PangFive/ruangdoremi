@@ -28,11 +28,6 @@
         "http://localhost:8080/assets/file_manager.js"
       ]
     },
-    "alpine_start": {
-      "js": [
-        "http://localhost:8080/assets/alpine_start.js"
-      ]
-    },
     "tiptap_basic": {
       "js": [
         "http://localhost:8080/assets/tiptap_basic.js"

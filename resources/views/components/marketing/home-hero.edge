@@ -1,4 +1,65 @@
   <div x-data="keenSliderData" class="relative isolate px-6 pt-14 lg:px-8">
+    <div class="fixed w-full h-full inset-0 bg-black bg-opacity-40 backdrop-filter backdrop-blur-sm z-[100] flex justify-center items-center overflow-hidden" x-show="open">
+      <section class="modal__body flex flex-col bg-white rounded-lg overflow-hidden max-h-[90%] max-w-[800px]" @click.away="open = false">
+        <h1 class="max-w-[525px] font-roboto font-medium text-[21px] leading-[34px] text-green-700 px-6 py-2" x-text="dataModal.title"></h1>
+        <div class="py-4 px-6 flex flex-col gap-6 max-w-[525px]">
+          <div class="flex gap-3 md:gap-6 flex-wrap">
+            <div class="flex items-start gap-4">
+              <img src="/icons/agenda/category.svg" width="20px" height="20px">
+              <div class="flex flex-col gap-2">
+                <p class="text-xs text-blue-gray-200"> Kategori Acara </p>
+                <p class="text-sm text-green-700 bg-green-50 px-2 py-1 rounded-md whitespace-nowrap" x-text="dataModal.category"></p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 ml-9 md:ml-0">
+              <p class="text-xs text-blue-gray-200"> Tipe Acara </p>
+              <p class="text-sm px-2 py-1 rounded-md whitespace-nowrap capitalize text-gray-600 bg-gray-100 " x-text="dataModal.tipe"></p>
+            </div>
+          </div>
+          <div class="flex gap-3 md:gap-6 flex-wrap">
+            <div class="flex items-start gap-4">
+              <img src="/icons/agenda/calendar.svg" width="20px" height="20px">
+              <div class="flex flex-col gap-2">
+                <p class="text-xs text-blue-gray-200"> Tanggal </p>
+                <p class="text-sm text-gray-800 whitespace-nowrap" x-text="dataModal.tanggal"></p>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 ml-9 md:ml-0">
+              <p class="text-xs text-blue-gray-200"> Waktu </p>
+              <p class="text-sm text-gray-800 whitespace-nowrap" x-text="dataModal.time"></p>
+            </div>
+            <div class="text-xs text-blue-700 bg-blue-50 px-2 py-1 rounded-md whitespace-nowrap self-end ml-9 md:ml-0" x-text="dataModal.status"></div>
+          </div>
+          <template x-if="dataModal.isOnline">
+            <div class="flex gap-3 md:gap-6 flex-wrap">
+              <div class="flex items-start gap-4">
+                <img src="/icons/agenda/url.svg" width="20px" height="20px">
+                <div class="flex flex-col gap-2">
+                  <p class="text-xs text-blue-gray-200"> Link Kegiatan </p>
+                  <a :href="dataModal.link" target="_blank" class="text-sm text-blue-600 underline" x-text="dataModal.link"></a>
+                </div>
+              </div>
+            </div>
+          </template>
+          <template x-if="!dataModal.isOnline">
+            <div class="flex gap-3 md:gap-6 flex-wrap">
+              <div class="flex items-start gap-4">
+                <img src="/icons/agenda/location.svg" width="20px" height="20px">
+                <div class="flex flex-col gap-2">
+                  <p class="text-xs text-blue-gray-200"> Tempat Pelaksanaan </p>
+                  <p class="text-sm text-gray-800" x-text="dataModal.tempat"></p>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="bg-gray-50 flex w-full items-center justify-center py-4 z-[100]"> 
+          @buttons.brand.base({ attrs: 'up-layer="new modal" up-size="grow" @click="open = false"' }) 
+            Tutup 
+          @end 
+        </div>
+      </section>
+    </div>
     <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
       <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#0061ff] to-[#60efff] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
     </div>
@@ -111,7 +172,7 @@
                   <div class="w-full flex flex-col flex-grow overflow-y-auto pt-1 pr-2 md:pr-4">
                     <div>
                         <template x-for="(event, index) in events" :key="index" x-init="$watch('tanggal', () => changeEvents())">
-                          <div class="flex gap-4">
+                          <div class="flex gap-4" @click="showModalEvent(event.id)">
                               <div class="flex gap-4 mb-4 w-full relative cursor-pointer">
                                   <div>
                                       <div class="relative pl-1">

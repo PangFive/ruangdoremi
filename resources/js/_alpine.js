@@ -36,6 +36,7 @@ Alpine.data('drawer', function () {
 
 Alpine.data('keenSliderData', () => {
   return {
+    open: false,
     tanggal: 12,
     tanggals: [
       {
@@ -77,31 +78,36 @@ Alpine.data('keenSliderData', () => {
     ],
     dataEvents: [
       {
-          date: 12,
-          title: "Materi Akuntansi",
-          category: "Bidang AN BPKP",
-          time: "08:00 - 16:00 WIB",
-          status: "Belum mulai",
-          noActivity: false,
+        id: 1,
+        date: 12,
+        title: "Materi Akuntansi",
+        category: "Bidang AN BPKP",
+        time: "08:00 - 16:00 WIB",
+        status: "Belum mulai",
+        tempat: "Batam",
+        tipe: "Online",
+        tanggal: "Minggu, 26 Nov 2023",
+        link: "https://zoom.us/",
+        isOnline: true,
+        noActivity: false,
       },
       {
-          date: 19,
-          title: "Materi dan Latihan Jurnal Transaksi",
-          category: "Bidang AN BPKP",
-          time: "08:00 - 16:00 WIB",
-          status: "Belum mulai",
-          noActivity: false,
-      },
-      {
-          date: 0,
-          title: "Tidak Ada Kegiatan",
-          category: "BPKP",
-          time: "Silahkan pilih tanggal lain",
-          status: "",
-          noActivity: true,
-      },
+        id: 2,
+        date: 19,
+        title: "Materi dan Latihan Jurnal Transaksi",
+        category: "Bidang AN BPKP",
+        time: "08:00 - 16:00 WIB",
+        status: "Belum mulai",
+        tempat: "Batam",
+        tipe: "Online",
+        tanggal: "Minggu, 26 Nov 2023",
+        link: "https://zoom.us/",
+        isOnline: true,
+        noActivity: false,
+      }
     ],
     events: [],
+    dataModal: {},
     current: 1,
     slider: null,
 
@@ -113,6 +119,7 @@ Alpine.data('keenSliderData', () => {
         this.events = data;
       } else {
         this.events = [{
+            id: 0,
             date: 0,
             title: "Tidak Ada Kegiatan",
             category: "BPKP",
@@ -121,6 +128,19 @@ Alpine.data('keenSliderData', () => {
             noActivity: true,
         }]
       }
+    },
+
+    showModalEvent(id = 0) {
+      const data = this.dataEvents.filter(event => event.id == id)
+
+      if (data.length > 0) {
+        this.dataModal = data[0];
+        this.open = true;
+      } else {
+        this.dataModal = {};
+        this.open = false;
+      }
+
     },
     
     init() {

@@ -42,37 +42,52 @@
 <body>
   <div class="mt-6" x-data="modalni">
 
-      <!-- Button (blue), duh! -->
-      <button class="px-4 py-2 text-white bg-blue-500 rounded select-none no-outline focus:shadow-outline" @click="open = true">Open Modal</button>
-
-      <!-- Dialog (full screen) -->
-      <div class="absolute top-0 left-0 flex items-center justify-center w-full h-full backdrop-blur-sm" style="background-color: rgba(0,0,0,.5);" x-show="open"  >
-
-        <!-- A basic modal dialog with title, body and one button to close -->
-        <div class="h-auto p-4 mx-2 text-left bg-white rounded shadow-xl md:max-w-xl md:p-6 lg:p-8 md:mx-0" @click.away="open = false">
-          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 class="text-lg font-medium leading-6 text-gray-900">
-              Modal Title
-            </h3>
-
-            <div class="mt-2">
-              <p class="text-sm leading-5 text-gray-500">
-                Adipisci quasi doloribus. Veniam veritatis dignissimos. Quis maiores ea. Et nulla sunt.
-              </p>
+      <div class="fixed w-full h-full inset-0 bg-black bg-opacity-40 backdrop-filter backdrop-blur-sm z-[100] flex justify-center items-center overflow-hidden" x-show="open"  >
+        <section class="modal__body flex flex-col bg-white rounded-lg overflow-hidden max-h-[90%] max-w-[800px]" @click.away="open = false">
+          <h1 class="max-w-[525px] font-roboto font-medium text-[21px] leading-[34px] text-green-700 px-6 py-2">Fun Run Alirun Jabar2023</h1>
+          <div class="py-4 px-6 flex flex-col gap-6 max-w-[525px]">
+            <div class="flex gap-3 md:gap-6 flex-wrap">
+              <div class="flex items-start gap-4"><img src="/icons/agenda/category.svg" width="20px" height="20px">
+                <div class="flex flex-col gap-2">
+                  <p class="text-xs text-blue-gray-200"> Kategori Acara </p>
+                  <p class="text-sm text-green-700 bg-green-50 px-2 py-1 rounded-md whitespace-nowrap"> Event Jawa Barat </p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 ml-9 md:ml-0">
+                <p class="text-xs text-blue-gray-200"> Tipe Acara </p>
+                <p class="text-sm px-2 py-1 rounded-md whitespace-nowrap capitalize text-gray-600 bg-gray-100 "> offline </p>
+              </div>
+            </div>
+            <div class="flex gap-3 md:gap-6 flex-wrap">
+              <div class="flex items-start gap-4"><img src="/icons/agenda/calendar.svg" width="20px" height="20px">
+                <div class="flex flex-col gap-2">
+                  <p class="text-xs text-blue-gray-200"> Tanggal </p>
+                  <p class="text-sm text-gray-800 whitespace-nowrap"> Minggu, 26 Nov 2023 </p>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 ml-9 md:ml-0">
+                <p class="text-xs text-blue-gray-200"> Waktu </p>
+                <p class="text-sm text-gray-800 whitespace-nowrap"> 06:00 - 09:00 WIB </p>
+              </div>
+              <div class="text-xs text-blue-700 bg-blue-50 px-2 py-1 rounded-md whitespace-nowrap self-end ml-9 md:ml-0"> Telah selesai </div>
+            </div>
+            <div class="flex gap-3 md:gap-6 flex-wrap">
+              <div class="flex items-start gap-4"><img src="/icons/agenda/location.svg" width="20px" height="20px">
+                <div class="flex flex-col gap-2">
+                  <p class="text-xs text-blue-gray-200"> Tempat Pelaksanaan </p>
+                  <p class="text-sm text-gray-800"> Bandung </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-
-          <!-- One big close button.  --->
-          <div class="mt-5 sm:mt-6">
-            <span class="flex w-full rounded-md shadow-sm">
-              <button @click="open = false" class="inline-flex justify-center w-full px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">
-                Close this modal!
-              </button>
-            </span>
+          <div class="bg-gray-50 flex w-full items-center justify-center py-4 z-[100]"> 
+            @buttons.brand.base({ attrs: 'up-layer="new modal" up-size="grow" @click="open = false"' }) 
+              Tutup 
+            @end 
           </div>
-
-        </div>
+        </section>
       </div>
+  </div>
     </div>
 
     <div id="context" x-data="{ state: {} }" @mounted="state = { ...state, [$event.detail.name]: $event.detail.data }" @call="state[$event.detail.namespace][$event.detail.name]($event.detail.args)"></div>
